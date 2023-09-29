@@ -1,7 +1,9 @@
 package com.example.lightsout.web;
 
 import com.example.lightsout.common.GameProblem;
+import com.example.lightsout.database.entity.Problem;
 import com.example.lightsout.database.service.ProblemService;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ProblemsAPIController {
@@ -22,20 +26,41 @@ public class ProblemsAPIController {
 
     @GetMapping(value = "/lightsout/problems", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getProblems() throws Exception {
-        String jsonResponse = new JSONObject("{\"message\" : \"This is Lights out problems controller"
-                + " and return all problems!\"}").toString();
+        List<Problem> allProblems = problemService.getAllProblems();  // Get all problems from the ProblemService
 
-        return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
+        JSONArray problemsArray = new JSONArray();
+        for (Problem problem : allProblems) {
+            JSONObject problemJson = new JSONObject();
+            problemJson.put("id", problem.getId());
+            problemJson.put("matrix", problem.getMatrix());
+            problemJson.put("size", problem.getSize());
+            // ... include other fields if necessary ...
+            problemsArray.put(problemJson);
+        }
 
+        JSONObject responseJson = new JSONObject();
+        responseJson.put("message", "Retrieved all problems successfully!");
+        responseJson.put("problems", problemsArray);
+
+        return new ResponseEntity<>(responseJson.toString(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/lightsout/problems/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getProblemId(@NotBlank @PathVariable String id) throws Exception {
-        String jsonResponse = new JSONObject("{\"message\" : \"This is Lights out problems"
-                + "by Id controller and returns problems with id: " + id + "\"}").toString();
+    public ResponseEntity<String> getProblemById(@NotBlank @PathVariable String id) throws Exception {
+        Optional<Problem> optionalProblem = problemService.getProblemById(id);
+        if (optionalProblem.isPresent()) {
+            Problem problem = optionalProblem.get();
+            JSONObject problemJson = new JSONObject();
+            problemJson.put("id", problem.getId());
+            problemJson.put("matrix", problem.getMatrix());
+            problemJson.put("size", problem.getSize());
 
-        return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
-
+            return new ResponseEntity<>(problemJson.toString(), HttpStatus.OK);
+        } else {
+            String jsonResponse = new JSONObject(
+                    "{\"error\" : \"Problem not found with id: " + id + "\"}").toString();
+            return new ResponseEntity<>(jsonResponse, HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping(value = "/lightsout/problems", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,7 +68,9 @@ public class ProblemsAPIController {
         GameProblem gameProblem = new GameProblem();  // Create a new GameProblem object
         problemService.createProblem(gameProblem);    // Invoke the createProblem method of ProblemService
 
-        String jsonResponse = new JSONObject("{\"message\" : \"New problem created successfully with size of " +gameProblem.getSize() + "\"}").toString();
+        String jsonResponse = new JSONObject(
+                "{\"message\" : \"New problem created successfully with size of " + gameProblem.getSize()
+                        + " and problemId " + gameProblem.getId() +  "\"}").toString();
         return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
     }
 }

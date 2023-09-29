@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class GameProblem {
-    private String problemId;
+    private String id;
     private int[][] matrix;
     private int size;
 
@@ -15,7 +15,7 @@ public class GameProblem {
     public GameProblem() {
         Random random = new Random();
         this.size = random.nextInt((8 - 3) + 1) + 3;
-        this.problemId = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID().toString();
         this.size = size;
 
         // Create the two-dimensional array with the specified size
@@ -30,7 +30,7 @@ public class GameProblem {
     }
 
     public GameProblem(int size) {
-        this.problemId = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID().toString();
         this.size = size;
 
         // Create the two-dimensional array with the specified size
@@ -45,8 +45,8 @@ public class GameProblem {
         }
     }
 
-    public String getProblemId() {
-        return problemId;
+    public String getId() {
+        return id;
     }
 
     public int getSize() {

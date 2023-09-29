@@ -6,6 +6,9 @@ import com.example.lightsout.database.repository.ProblemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ProblemService {
 
@@ -18,7 +21,16 @@ public class ProblemService {
 
     public void createProblem(GameProblem gameProblem) {
         String matrixJson = gameProblem.toJson();
-        Problem problem = new Problem(gameProblem.getProblemId(), matrixJson, gameProblem.getSize());
+        Problem problem = new Problem(gameProblem.getId(), matrixJson, gameProblem.getSize());
         problemRepository.save(problem);
     }
+
+    public Optional<Problem> getProblemById(String id) {
+        return problemRepository.findById(id);
+    }
+
+    public List<Problem> getAllProblems() {
+        return problemRepository.findAll();
+    }
+
 }

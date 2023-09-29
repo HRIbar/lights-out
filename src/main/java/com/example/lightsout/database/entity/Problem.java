@@ -7,11 +7,8 @@ import java.util.List;
 @Table(name = "problem")
 public class Problem {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "problem_id", unique = true, nullable = false)
-    private String problemId;
+    @Column(name = "id", unique = true, nullable = false)
+    private String id;
 
     @Column(name = "matrix", columnDefinition = "TEXT")
     private String matrix;
@@ -24,11 +21,23 @@ public class Problem {
 
     public Problem() { }
 
-    public Problem(String problemId, String matrix, int size) {
-        this.problemId = problemId;
+    public Problem(String id, String matrix, int size) {
+        this.id = id;
         this.matrix = matrix;
         this.size = size;
     }
 
-    // Getter and Setter methods...
+    public String getId() {
+        return this.id;
+    }
+
+    public String getMatrix() {
+        return this.matrix;
+    }
+
+    public int getSize() {
+        return this.size;
+    }
+
+
 }
