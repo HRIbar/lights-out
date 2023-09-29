@@ -1,6 +1,9 @@
 package com.example.lightsout.web;
 
+import com.example.lightsout.common.GameProblem;
+import com.example.lightsout.database.service.ProblemService;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,9 @@ import javax.validation.constraints.NotBlank;
 
 @RestController
 public class ProblemsAPIController {
+
+    @Autowired
+    private ProblemService problemService;
 
     @GetMapping(value = "/lightsout/problems", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getProblems() throws Exception {
@@ -34,10 +40,10 @@ public class ProblemsAPIController {
 
     @PostMapping(value = "/lightsout/problems", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createProblem() throws Exception {
-        String jsonResponse = new JSONObject("{\"message\" : \"This is Lights out POST problem controller"
-                + " and creates a new problem!\"}").toString();
+        GameProblem gameProblem = new GameProblem();  // Create a new GameProblem object
+        problemService.createProblem(gameProblem);    // Invoke the createProblem method of ProblemService
 
+        String jsonResponse = new JSONObject("{\"message\" : \"New problem created successfully with size of " +gameProblem.getSize() + "\"}").toString();
         return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
-
     }
 }

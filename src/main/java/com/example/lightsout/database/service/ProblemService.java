@@ -1,5 +1,6 @@
 package com.example.lightsout.database.service;
 
+import com.example.lightsout.common.GameProblem;
 import com.example.lightsout.database.entity.Problem;
 import com.example.lightsout.database.repository.ProblemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,9 @@ public class ProblemService {
         this.problemRepository = problemRepository;
     }
 
-    public void createProblem(String matrixData) {
-        Problem problem = new Problem();
-        problem.setMatrix(matrixData);
+    public void createProblem(GameProblem gameProblem) {
+        String matrixJson = gameProblem.toJson();
+        Problem problem = new Problem(gameProblem.getProblemId(), matrixJson, gameProblem.getSize());
         problemRepository.save(problem);
     }
 }

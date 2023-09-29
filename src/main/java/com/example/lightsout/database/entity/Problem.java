@@ -10,15 +10,25 @@ public class Problem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "matrix")
+    @Column(name = "problem_id", unique = true, nullable = false)
+    private String problemId;
+
+    @Column(name = "matrix", columnDefinition = "TEXT")
     private String matrix;
+
+    @Column(name = "size")
+    private int size;
 
     @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
     private List<Solution> solutions;
 
-    public void setMatrix(String matrixData) {
-        this.matrix = matrixData;
+    public Problem() { }
+
+    public Problem(String problemId, String matrix, int size) {
+        this.problemId = problemId;
+        this.matrix = matrix;
+        this.size = size;
     }
 
-    // Constructors, getters, setters, etc.
+    // Getter and Setter methods...
 }
