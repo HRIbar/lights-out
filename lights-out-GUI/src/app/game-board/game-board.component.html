@@ -1,0 +1,7 @@
+<table>
+  <tr *ngFor="let row of lightsOutService.getGrid(); let i = index">
+    <td *ngFor="let cell of row; let j = index" (click)="onCellClick(i, j)">
+      <div [class.on]="cell"></div>
+    </td>
+  </tr>
+</table>
