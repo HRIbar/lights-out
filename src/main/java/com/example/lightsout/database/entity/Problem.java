@@ -16,8 +16,8 @@ public class Problem {
     @Column(name = "size")
     private int size;
 
-    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
-    private List<Solution> solutions;
+    @OneToOne(mappedBy = "problem", cascade = CascadeType.ALL)
+    private Solution solution;
 
     public Problem() { }
 

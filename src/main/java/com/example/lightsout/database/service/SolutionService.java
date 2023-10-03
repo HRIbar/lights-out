@@ -7,6 +7,8 @@ import com.example.lightsout.database.repository.SolutionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class SolutionService {
 
@@ -29,6 +31,10 @@ public class SolutionService {
         solution.setProblem(problem);
 
         solutionRepository.save(solution);
+    }
+
+    public Optional<Solution> getByProblemId(String problemKey){
+       return solutionRepository.getByProblemId(problemKey);
     }
 
     // Add other methods for managing solutions as needed

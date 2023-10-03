@@ -2,7 +2,9 @@ package com.example.lightsout.web;
 
 import com.example.lightsout.common.GameProblem;
 import com.example.lightsout.database.entity.Problem;
+import com.example.lightsout.database.entity.Solution;
 import com.example.lightsout.database.service.ProblemService;
+import com.example.lightsout.database.service.SolutionService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import com.example.lightsout.service.LightsOutSolverService;
@@ -26,6 +28,9 @@ public class SolutionsAPIController {
     private ProblemService problemService;
 
     @Autowired
+    private SolutionService solutionService;
+
+    @Autowired
     private ArrayConversionService arrayConversionService;
 
     @Autowired
@@ -43,23 +48,37 @@ public class SolutionsAPIController {
     @GetMapping(value = "/lightsout/solutions/problem/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getSolutionById(@NotBlank @PathVariable String id) throws Exception {
         Optional<Problem> optionalProblem = problemService.getProblemById(id);
+        Optional<Solution> optionalSolution = solutionService.getByProblemId(id);
 
-        if (optionalProblem.isPresent()) {
-            Problem problem = optionalProblem.get();
-            int[][] problemArray = arrayConversionService.convertStringToArray(problem.getMatrix());
-            int[][] solutionArray = lightsOutSolverService.solve(problemArray);
-            if (solutionArray.length == 0) {
-                String jsonResponse = new JSONObject("{\"message\" : " +
-                        "\"There is no solution for problem with problem id: " + id + "\"}").toString();
+        if (optionalSolution.isPresent() == false) {
+            if (optionalProblem.isPresent()) {
+                Problem problem = optionalProblem.get();
+                int[][] problemArray = arrayConversionService.convertStringToArray(problem.getMatrix());
+                int[][] solutionArray = lightsOutSolverService.solve(problemArray);
+
+                String matrix = arrayConversionService.convertArrayToString(solutionArray);
+                //Solution solution = new Solution(problem,matrix);
+                //solutionService.createSolution(solution);
+
+                if (solutionArray.length == 0) {
+                    String jsonResponse = new JSONObject("{\"message\" : " +
+                            "\"There is no solution for problem with problem id: " + id + "\"}").toString();
+                    return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
+                }
+                String jsonResponse = new JSONObject("{\"message\" : \"The solution for problem id: " + id +
+                        " is " + arrayConversionService.convertArrayToString(solutionArray) + "\"}").toString();
+                return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
+
+            } else {
+                String jsonResponse = new JSONObject("{\"message\" : \"Problem with problem id: " + id +
+                        " was not found therefore there is no solution." + "\"}").toString();
                 return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
             }
-            String jsonResponse = new JSONObject("{\"message\" : \"The solution for problem id: " + id +
-                    " is " + arrayConversionService.convertArrayToString(solutionArray) + "\"}").toString();
-            return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
 
         } else {
-            String jsonResponse = new JSONObject("{\"message\" : \"Problem with problem id: " + id +
-                    " was not found therefore there is no solution." + "\"}").toString();
+            Solution solution = optionalSolution.get();
+            String jsonResponse = new JSONObject("{\"message\" : \"The solution for problem id: " + id +
+                    " is " + "solution.getMatrix()" + "\"}").toString();
             return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
         }
     }

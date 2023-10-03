@@ -16,9 +16,12 @@ public class Solution {
     @OneToMany(mappedBy = "solution", cascade = CascadeType.ALL)
     private List<SolutionStep> solutionStepsList;
 
-    @ManyToOne
-    @JoinColumn(name = "problemKey", referencedColumnName = "id")
+    @OneToOne
+    @JoinColumn(name = "problemId", referencedColumnName = "id")
     private Problem problem;
+
+    @Column(name = "solvedMatrix")
+    private String solvedMatrix;
 
     public void setSolutionSteps(String solutionSteps) {
         this.solutionSteps = solutionSteps;
