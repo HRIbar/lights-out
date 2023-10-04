@@ -9,16 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProblemsAPIController {
 
     @Autowired
@@ -65,12 +64,13 @@ public class ProblemsAPIController {
 
     @PostMapping(value = "/lightsout/problems", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createProblem() throws Exception {
+        System.out.println("problems POST controller invoked!");
         GameProblem gameProblem = new GameProblem();  // Create a new GameProblem object
         problemService.createProblem(gameProblem);    // Invoke the createProblem method of ProblemService
 
         String jsonResponse = new JSONObject(
-                "{\"message\" : \"New problem created successfully with size of " + gameProblem.getSize()
-                        + " and problemId " + gameProblem.getId() +  "\"}").toString();
+                "{\"problem\":{\"size\" : \"" + gameProblem.getSize() + "\","
+                        + "\"problemId\": " + "\""+ gameProblem.getId() +  "\"}}").toString();
         return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
     }
 }
