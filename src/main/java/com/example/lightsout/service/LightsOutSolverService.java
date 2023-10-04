@@ -2,8 +2,6 @@ package com.example.lightsout.service;
 
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
 @Service
 public class LightsOutSolverService {
 
@@ -31,7 +29,7 @@ public class LightsOutSolverService {
         }
 
         // Solve the system using Gaussian elimination
-        int[] solutionVector = GaussianEliminationGF2.solve(matrix, vector);
+        int[] solutionVector = GaussianEliminationService.solve(matrix, vector);
 
         // Convert the solution vector back to a 2D array
         int[][] solution = new int[n][m];

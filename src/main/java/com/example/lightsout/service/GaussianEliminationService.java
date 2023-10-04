@@ -1,6 +1,6 @@
 package com.example.lightsout.service;
 
-public class GaussianEliminationGF2 {
+public class GaussianEliminationService {
 
     public static int[] solve(int[][] matrix, int[] vector) {
         int n = matrix.length;
