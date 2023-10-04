@@ -14,5 +14,9 @@ export class GameBoardComponent {
   onCellClick(row: number, col: number) {
     this.lightsOutService.toggleCell(row, col);
   }
+
+  onGetProblemClick() {
+    this.lightsOutService.fetchProblemData();
+  }
 }
 

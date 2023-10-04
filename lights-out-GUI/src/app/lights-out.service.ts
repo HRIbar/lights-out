@@ -15,7 +15,7 @@ export class LightsOutService {
     this.fetchProblemData();
   }
 
-  private fetchProblemData() {
+  public fetchProblemData() {
     this.http.post<{ problem: { size: string, problemId: string } }>(this.apiUrl, {})
       .pipe(
         catchError(error => {
