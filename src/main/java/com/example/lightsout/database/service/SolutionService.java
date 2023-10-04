@@ -21,15 +21,8 @@ public class SolutionService {
         this.problemRepository = problemRepository;
     }
 
-    public void createSolution(String solutionSteps, Long problemId) {
-        Solution solution = new Solution();
-        solution.setSolutionSteps(solutionSteps);
-
-        Problem problem = problemRepository.findById(problemId)
-                .orElseThrow(() -> new RuntimeException("Problem not found with ID: " + problemId));
-
-        solution.setProblem(problem);
-
+    public void createSolution(String solutionMatrix, Problem problem) {
+        Solution solution = new Solution(solutionMatrix, problem);
         solutionRepository.save(solution);
     }
 

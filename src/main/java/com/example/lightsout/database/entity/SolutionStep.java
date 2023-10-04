@@ -6,8 +6,8 @@ import javax.persistence.*;
 @Table(name = "solution_step")
 public class SolutionStep {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id", unique = true, nullable = false)
+    private String id;
 
     @ManyToOne
     @JoinColumn(name = "solutionKey", referencedColumnName = "id")

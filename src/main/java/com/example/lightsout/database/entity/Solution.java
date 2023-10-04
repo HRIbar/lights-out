@@ -1,14 +1,25 @@
 package com.example.lightsout.database.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "solution")
 public class Solution {
+
+    public Solution(String solutionMatrix, Problem problem) {
+        this.id = UUID.randomUUID().toString();
+        this.solutionStepsList = new ArrayList<>();
+        this.solutionSteps = "";
+        this.solutionMatrix = solutionMatrix;
+        this.problem = problem;
+    }
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id", unique = true, nullable = false)
+    private String id;
 
     @Column(name = "solutionSteps")
     private String solutionSteps;
@@ -20,8 +31,12 @@ public class Solution {
     @JoinColumn(name = "problemId", referencedColumnName = "id")
     private Problem problem;
 
-    @Column(name = "solvedMatrix")
-    private String solvedMatrix;
+    @Column(name = "solutionMatrix")
+    private String solutionMatrix;
+
+    public Solution() {
+
+    }
 
     public void setSolutionSteps(String solutionSteps) {
         this.solutionSteps = solutionSteps;
@@ -29,6 +44,10 @@ public class Solution {
 
     public void setProblem(Problem problem) {
         this.problem = problem;
+    }
+
+    public String getSolutionMatrix(){
+        return this.solutionMatrix;
     }
 
     // Constructors, getters, setters, etc.

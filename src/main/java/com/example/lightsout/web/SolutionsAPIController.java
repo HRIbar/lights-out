@@ -56,9 +56,8 @@ public class SolutionsAPIController {
                 int[][] problemArray = arrayConversionService.convertStringToArray(problem.getMatrix());
                 int[][] solutionArray = lightsOutSolverService.solve(problemArray);
 
-                String matrix = arrayConversionService.convertArrayToString(solutionArray);
-                //Solution solution = new Solution(problem,matrix);
-                //solutionService.createSolution(solution);
+                String solutionMatrix = arrayConversionService.convertArrayToString(solutionArray);
+                solutionService.createSolution(solutionMatrix,problem);
 
                 if (solutionArray.length == 0) {
                     String jsonResponse = new JSONObject("{\"message\" : " +
@@ -78,7 +77,7 @@ public class SolutionsAPIController {
         } else {
             Solution solution = optionalSolution.get();
             String jsonResponse = new JSONObject("{\"message\" : \"The solution for problem id: " + id +
-                    " is " + "solution.getMatrix()" + "\"}").toString();
+                    " is " + solution.getClass() + "\"}").toString();
             return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
         }
     }
