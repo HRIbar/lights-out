@@ -5,6 +5,7 @@ import com.example.lightsout.database.entity.Problem;
 import com.example.lightsout.database.entity.Solution;
 import com.example.lightsout.database.service.ProblemService;
 import com.example.lightsout.database.service.SolutionService;
+import com.example.lightsout.database.service.SolutionStepService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import com.example.lightsout.service.LightsOutSolverService;
@@ -29,6 +30,9 @@ public class SolutionsAPIController {
 
     @Autowired
     private SolutionService solutionService;
+
+    @Autowired
+    private SolutionStepService solutionStepService;
 
     @Autowired
     private ArrayConversionService arrayConversionService;
@@ -58,6 +62,9 @@ public class SolutionsAPIController {
 
                 String solutionMatrix = arrayConversionService.convertArrayToString(solutionArray);
                 solutionService.createSolution(solutionMatrix,problem);
+                optionalSolution = solutionService.getByProblemId(id);
+                Solution solution = optionalSolution.get();
+                solutionStepService.createSolutionSteps(solution);
 
                 if (solutionArray.length == 0) {
                     String jsonResponse = new JSONObject("{\"message\" : " +

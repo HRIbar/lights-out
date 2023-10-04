@@ -9,14 +9,6 @@ import java.util.UUID;
 @Table(name = "solution")
 public class Solution {
 
-    public Solution(String solutionMatrix, Problem problem) {
-        this.id = UUID.randomUUID().toString();
-        this.solutionStepsList = new ArrayList<>();
-        this.solutionSteps = "";
-        this.solutionMatrix = solutionMatrix;
-        this.problem = problem;
-    }
-
     @Id
     @Column(name = "id", unique = true, nullable = false)
     private String id;
@@ -36,6 +28,14 @@ public class Solution {
 
     public Solution() {
 
+    }
+
+    public Solution(String solutionMatrix, Problem problem) {
+        this.id = UUID.randomUUID().toString();
+        this.solutionStepsList = new ArrayList<>();
+        this.solutionSteps = "";
+        this.solutionMatrix = solutionMatrix;
+        this.problem = problem;
     }
 
     public void setSolutionSteps(String solutionSteps) {
