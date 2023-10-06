@@ -48,6 +48,7 @@ export class LightsOutService {
         })
       )
       .subscribe(response => {
+        this.solutionMatrix = [];
         this.gridSize = response.size;
         this.grid = JSON.parse(response.matrix).map((row: any[]) => row.map(value => Boolean(value)));
       });
