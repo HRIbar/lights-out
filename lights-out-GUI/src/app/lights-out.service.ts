@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,14 +10,17 @@ import { throwError } from 'rxjs';
 export class LightsOutService {
   private gridSize: number = 5;
   private grid: boolean[][] = [];
-  private apiUrl: string = 'http://localhost:8080/lightsout/problems';
+  private problemApiUrl: string = 'http://localhost:8080/lightsout/problems';
+  private solutionApiUrl: string = 'http://localhost:8080/lightsout/solutions';
+  private solutionMatrix: boolean[][] = [];
+  public problemId: string = '';
 
   constructor(private http: HttpClient) {
     this.fetchProblemData();
   }
 
   public fetchProblemData() {
-    this.http.post<{ problem: { size: string, problemId: string } }>(this.apiUrl, {})
+    this.http.post<{ problem: { size: string, problemId: string } }>(this.problemApiUrl, {})
       .pipe(
         catchError(error => {
           console.error('Error fetching problem data:', error);
@@ -25,12 +29,17 @@ export class LightsOutService {
       )
       .subscribe(response => {
         const problemId = response.problem.problemId;
+        this.problemId = problemId ? problemId : '';
         this.fetchProblemDetails(problemId);
       });
   }
 
+  public getProblemId(){
+    return this.problemId;
+  }
+
   private fetchProblemDetails(problemId: string) {
-    const url = `${this.apiUrl}/${problemId}`;
+    const url = `${this.problemApiUrl}/${problemId}`;
     this.http.get<{ size: number, id: string, matrix: string }>(url)
       .pipe(
         catchError(error => {
@@ -42,6 +51,21 @@ export class LightsOutService {
         this.gridSize = response.size;
         this.grid = JSON.parse(response.matrix).map((row: any[]) => row.map(value => Boolean(value)));
       });
+  }
+
+  // @ts-ignore
+  public fetchSolutionData(problemId: string): Observable<{solutionMatrix: boolean[][]}> {
+    return this.http.get<{solutionMatrix: boolean[][]}>(`${this.solutionApiUrl}/problem/${problemId}`)
+      .pipe(
+        catchError(error => {
+          console.error('Error fetching solution data:', error);
+          return throwError(error);
+        })
+      );
+  }
+
+  public getSolutionMatrix(): boolean[][] {
+    return this.solutionMatrix;
   }
 
   resetGrid() {

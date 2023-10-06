@@ -1,8 +1,9 @@
 <table>
   <tr *ngFor="let row of lightsOutService.getGrid(); let i = index">
     <td *ngFor="let cell of row; let j = index" (click)="onCellClick(i, j)">
-      <div [class.on]="cell"></div>
+      <div [class.on]="cell" [class.purple]="solutionMatrix[i] && solutionMatrix[i][j]"></div>
     </td>
   </tr>
 </table>
 <button (click)="onGetProblemClick()">Get Problem</button>
+<button (click)="getSolution()">Get Solution</button>

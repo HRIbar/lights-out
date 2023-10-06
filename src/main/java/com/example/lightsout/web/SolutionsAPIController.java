@@ -42,6 +42,7 @@ public class SolutionsAPIController {
     @Autowired
     private LightsOutSolverService lightsOutSolverService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/lightsout/solutions", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getSolutions() throws Exception {
 
@@ -51,8 +52,10 @@ public class SolutionsAPIController {
         return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/lightsout/solutions/problem/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getSolutionById(@NotBlank @PathVariable String id) throws Exception {
+        System.out.println("Solutions GET controller invoked!");
         Optional<Problem> optionalProblem = problemService.getProblemById(id);
         Optional<Solution> optionalSolution = solutionService.getByProblemId(id);
 
@@ -69,12 +72,12 @@ public class SolutionsAPIController {
                 solutionStepService.createSolutionSteps(solution);
 
                 if (solutionArray.length == 0) {
-                    String jsonResponse = new JSONObject("{\"message\" : " +
-                            "\"There is no solution for problem with problem id: " + id + "\"}").toString();
+                    String jsonResponse = new JSONObject("{\"problemid\":"+ id + "," +
+                             "\"solutionMatrix\":\"" + solutionMatrix + "\"}").toString();
                     return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
                 }
-                String jsonResponse = new JSONObject("{\"message\" : \"The solution for problem id: " + id +
-                        " is " + arrayConversionService.convertArrayToString(solutionArray) + "\"}").toString();
+                String jsonResponse = new JSONObject("{\"problemid\":"+ id + "," +
+                        "\"solutionMatrix\":\"" + solutionMatrix + "\"}").toString();
                 return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
 
             } else {
@@ -85,8 +88,8 @@ public class SolutionsAPIController {
 
         } else {
             Solution solution = optionalSolution.get();
-            String jsonResponse = new JSONObject("{\"message\" : \"The solution for problem id: " + id +
-                    " is " + solution.getClass() + "\"}").toString();
+            String jsonResponse = new JSONObject("{\"problemid\":"+ id + "," +
+                    "\"solutionMatrix\":\"" + solution.getSolutionMatrix() + "\"}").toString();
             return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
         }
     }

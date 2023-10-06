@@ -23,6 +23,7 @@ public class ProblemsAPIController {
     @Autowired
     private ProblemService problemService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/lightsout/problems", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getProblems() throws Exception {
         List<Problem> allProblems = problemService.getAllProblems();  // Get all problems from the ProblemService
@@ -44,6 +45,7 @@ public class ProblemsAPIController {
         return new ResponseEntity<>(responseJson.toString(), HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/lightsout/problems/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getProblemById(@NotBlank @PathVariable String id) throws Exception {
         Optional<Problem> optionalProblem = problemService.getProblemById(id);
@@ -62,6 +64,7 @@ public class ProblemsAPIController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "/lightsout/problems", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createProblem() throws Exception {
         System.out.println("problems POST controller invoked!");
