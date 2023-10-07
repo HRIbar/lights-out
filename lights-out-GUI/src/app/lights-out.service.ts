@@ -38,7 +38,7 @@ export class LightsOutService {
     return this.problemId;
   }
 
-  private fetchProblemDetails(problemId: string) {
+  public fetchProblemDetails(problemId: string) {
     const url = `${this.problemApiUrl}/${problemId}`;
     this.http.get<{ size: number, id: string, matrix: string }>(url)
       .pipe(
@@ -63,6 +63,14 @@ export class LightsOutService {
           return throwError(error);
         })
       );
+  }
+
+  fetchAllProblems(): Observable<any> {
+    return this.http.get('http://localhost:8080/lightsout/problems')
+      .pipe(catchError(error => {
+        console.error('Error fetching all problems:', error);
+        return throwError(error);
+      }));
   }
 
   public getSolutionMatrix(): boolean[][] {

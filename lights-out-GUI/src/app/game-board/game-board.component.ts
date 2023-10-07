@@ -1,6 +1,7 @@
 // src/app/game-board/game-board.component.ts
 import {Component, OnInit} from '@angular/core';
 import {LightsOutService} from '../lights-out.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-game-board',
@@ -10,8 +11,11 @@ import {LightsOutService} from '../lights-out.service';
 export class GameBoardComponent implements OnInit {
 
   solutionMatrix: boolean[][] = [];
+  message: string = '';
 
-  constructor(public lightsOutService: LightsOutService) {
+  constructor(
+    public lightsOutService: LightsOutService,
+    private router: Router) {
   }
 
   onCellClick(row: number, col: number): void {
@@ -31,6 +35,7 @@ export class GameBoardComponent implements OnInit {
 
   getSolution() {
     const problemId = this.lightsOutService.getProblemId();
+    this.lightsOutService.fetchProblemDetails(problemId);
     this.lightsOutService.fetchSolutionData(problemId)
       .subscribe(response => {
         console.log('Solution Response: ', response.solutionMatrix);
@@ -39,13 +44,18 @@ export class GameBoardComponent implements OnInit {
         // @ts-ignore
         const parsedMatrix: number[][] = JSON.parse(response.solutionMatrix);
         this.solutionMatrix = parsedMatrix.map(row => row.map(value => Boolean(value)));
+        this.message = "To solve the puzzle please click on Purple squares from left to right and top to bottom";
       });
   }
+
   resetSolutionMatrix(): void {
-    this.solutionMatrix = Array.from({ length: this.lightsOutService.getGrid().length }, () =>
-      Array.from({ length: this.lightsOutService.getGrid()[0].length }, () => false)
+    this.solutionMatrix = Array.from({length: this.lightsOutService.getGrid().length}, () =>
+      Array.from({length: this.lightsOutService.getGrid()[0].length}, () => false)
     );
   }
 
+  displayAllProblems() {
+    this.router.navigate(['/all-problems']);
+  }
 }
 

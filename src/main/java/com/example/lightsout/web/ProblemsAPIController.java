@@ -39,7 +39,6 @@ public class ProblemsAPIController {
         }
 
         JSONObject responseJson = new JSONObject();
-        responseJson.put("message", "Retrieved all problems successfully!");
         responseJson.put("problems", problemsArray);
 
         return new ResponseEntity<>(responseJson.toString(), HttpStatus.OK);

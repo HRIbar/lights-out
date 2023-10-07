@@ -1,0 +1,14 @@
+<label>
+  <table border="1">
+    <tr>
+      <th>Problem size</th>
+      <th>id</th>
+      <th>Matrix</th>
+    </tr>
+    <tr *ngFor="let problem of problems">
+      <td>{{ problem.size }}</td>
+      <td>{{ problem.id }}</td>
+      <td>{{ problem.matrix }}</td>
+    </tr>
+  </table>
+</label>
