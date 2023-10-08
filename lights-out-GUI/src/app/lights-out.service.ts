@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {catchError, map} from 'rxjs/operators';
+import {throwError} from 'rxjs';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +34,7 @@ export class LightsOutService {
       });
   }
 
-  public getProblemId(){
+  public getProblemId() {
     return this.problemId;
   }
 
@@ -55,8 +55,8 @@ export class LightsOutService {
   }
 
   // @ts-ignore
-  public fetchSolutionData(problemId: string): Observable<{solutionMatrix: boolean[][]}> {
-    return this.http.get<{solutionMatrix: boolean[][]}>(`${this.solutionApiUrl}/problem/${problemId}`)
+  public fetchSolutionData(problemId: string): Observable<{ solutionMatrix: boolean[][] }> {
+    return this.http.get<{ solutionMatrix: boolean[][] }>(`${this.solutionApiUrl}/problem/${problemId}`)
       .pipe(
         catchError(error => {
           console.error('Error fetching solution data:', error);
@@ -78,8 +78,8 @@ export class LightsOutService {
   }
 
   resetGrid() {
-    this.grid = Array.from({ length: this.gridSize }, () =>
-      Array.from({ length: this.gridSize }, () => Math.random() < 0.5)
+    this.grid = Array.from({length: this.gridSize}, () =>
+      Array.from({length: this.gridSize}, () => Math.random() < 0.5)
     );
   }
 
@@ -93,5 +93,9 @@ export class LightsOutService {
 
   getGrid(): boolean[][] {
     return this.grid;
+  }
+
+  public setProblemId(problemId: string) {
+    this.problemId = problemId
   }
 }

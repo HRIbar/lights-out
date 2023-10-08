@@ -7,7 +7,7 @@
     </tr>
     <tr *ngFor="let problem of problems">
       <td>{{ problem.size }}</td>
-      <td>{{ problem.id }}</td>
+      <td><button (click)="onProblemClick(problem.id)">{{ problem.id }}</button></td>
       <td>{{ problem.matrix }}</td>
     </tr>
   </table>

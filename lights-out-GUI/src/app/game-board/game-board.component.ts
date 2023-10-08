@@ -1,7 +1,7 @@
 // src/app/game-board/game-board.component.ts
 import {Component, OnInit} from '@angular/core';
 import {LightsOutService} from '../lights-out.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-game-board',
@@ -15,8 +15,18 @@ export class GameBoardComponent implements OnInit {
 
   constructor(
     public lightsOutService: LightsOutService,
-    private router: Router) {
+    private router: Router,
+    private route: ActivatedRoute) {
+    this.route.params.subscribe(params => {
+      console.log('Route params:', params);
+      const problemId = params['problemId'];
+      if (problemId) {
+        this.lightsOutService.setProblemId(problemId);
+        this.lightsOutService.fetchProblemDetails(problemId);
+      }
+    });
   }
+
 
   onCellClick(row: number, col: number): void {
     this.lightsOutService.toggleCell(row, col);
