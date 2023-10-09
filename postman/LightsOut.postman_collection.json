@@ -1,0 +1,175 @@
+{
+	"info": {
+		"_postman_id": "7577509a-941e-483e-8a9a-2baf849b58ec",
+		"name": "LightsOut",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20853427"
+	},
+	"item": [
+		{
+			"name": "{{env}}/lightsout/solutions",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{env}}/lightsout/solutions",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"lightsout",
+						"solutions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{env}}/lightsout/solutions/problem/{id}",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{env}}/lightsout/solutions/problem/solution123",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"lightsout",
+						"solutions",
+						"problem",
+						"solution123"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{env}}/lightsout/problems",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{env}}/lightsout/problems",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"lightsout",
+						"problems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{env}}/lightsout/problems",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{env}}/lightsout/problems",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"lightsout",
+						"problems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{env}}/lightsout/problems/{id}",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{env}}/lightsout/problems/{id}",
+					"host": [
+						"{{env}}"
+					],
+					"path": [
+						"lightsout",
+						"problems",
+						"{id}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

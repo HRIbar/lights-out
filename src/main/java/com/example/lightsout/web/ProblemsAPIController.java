@@ -4,8 +4,6 @@ import com.example.lightsout.common.GameProblem;
 import com.example.lightsout.database.entity.Problem;
 import com.example.lightsout.database.service.ProblemService;
 import io.swagger.annotations.*;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,6 +26,9 @@ public class ProblemsAPIController {
     @Autowired
     private ProblemService problemService;
     private Object mediaType;
+
+    private static final Logger LOGGER = Logger.getLogger(ProblemsAPIController.class.getName());
+
 
     @CrossOrigin(origins = "http://localhost:4200")
     @ApiOperation(value = "Get a list of all problems")
@@ -72,7 +73,7 @@ public class ProblemsAPIController {
     })
     @GetMapping(value = "/lightsout/problems/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getProblemById(@NotBlank @PathVariable @Schema(description = "Problem id in UUID format",
-            example = "{ \"ff9a1fc3-7493-4531-b428-e94a97586fca\" }") String id
+            example = "ff9a1fc3-7493-4531-b428-e94a97586fca") String id
     ) throws Exception {
         Optional<Problem> optionalProblem = problemService.getProblemById(id);
         if (optionalProblem.isPresent()) {
@@ -103,8 +104,8 @@ public class ProblemsAPIController {
     })
     @PostMapping(value = "/lightsout/problems", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createProblem() throws Exception {
-        System.out.println("problems POST controller invoked!");
-        GameProblem gameProblem = new GameProblem();  
+        LOGGER.info("problems POST controller invoked!");
+        GameProblem gameProblem = new GameProblem();
         problemService.createProblem(gameProblem);
 
         String jsonResponse = new JSONObject(

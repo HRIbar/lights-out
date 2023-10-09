@@ -19,7 +19,8 @@ public class Problem {
     @OneToOne(mappedBy = "problem", cascade = CascadeType.ALL)
     private Solution solution;
 
-    public Problem() { }
+    public Problem() {
+    }
 
     public Problem(String id, String matrix, int size) {
         this.id = id;
@@ -38,6 +39,4 @@ public class Problem {
     public int getSize() {
         return this.size;
     }
-
-
 }

@@ -77,6 +77,10 @@ export class LightsOutService {
     return this.solutionMatrix;
   }
 
+  public resetSolutionMatrix() {
+    this.solutionMatrix = [];
+  }
+
   resetGrid() {
     this.grid = Array.from({length: this.gridSize}, () =>
       Array.from({length: this.gridSize}, () => Math.random() < 0.5)

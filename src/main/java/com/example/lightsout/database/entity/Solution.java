@@ -61,6 +61,4 @@ public class Solution {
     public int getSolutionSteps() {
         return this.solutionSteps;
     }
-
-
 }

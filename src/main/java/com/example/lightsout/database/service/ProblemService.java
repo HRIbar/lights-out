@@ -32,5 +32,4 @@ public class ProblemService {
     public List<Problem> getAllProblems() {
         return problemRepository.findAll();
     }
-
 }

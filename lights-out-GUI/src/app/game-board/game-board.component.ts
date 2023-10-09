@@ -1,4 +1,3 @@
-// src/app/game-board/game-board.component.ts
 import {Component, OnInit} from '@angular/core';
 import {LightsOutService} from '../lights-out.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -37,6 +36,8 @@ export class GameBoardComponent implements OnInit {
   }
 
   onGetProblemClick() {
+    this.lightsOutService.resetSolutionMatrix();
+    this.solutionMatrix = [];
     this.lightsOutService.fetchProblemData();
   }
 

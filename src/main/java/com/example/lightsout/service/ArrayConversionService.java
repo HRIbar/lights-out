@@ -1,6 +1,5 @@
 package com.example.lightsout.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +19,7 @@ public class ArrayConversionService {
         // Populate the result array
         for (int i = 0; i < numRows; i++) {
             // Remove leading and trailing brackets from each row string
-            String row = rows[i].replaceAll("\\[", "").replaceAll("\\]","");
+            String row = rows[i].replaceAll("\\[", "").replaceAll("\\]", "");
             String[] values = row.split(",");
             for (int j = 0; j < numCols; j++) {
                 result[i][j] = Integer.parseInt(values[j]);

@@ -32,16 +32,16 @@ public class SolutionStepService {
         int k = 0;
         for (int i = 0; i < solutionArray.length; i++) {
             for (int j = 0; j < solutionArray.length; j++) {
-                if(solutionArray[i][j] == 1) {
+                if (solutionArray[i][j] == 1) {
                     k++;
-                    createSolutionStep(solution,i +","+ j, k);
+                    createSolutionStep(solution, i + "," + j, k);
                 }
             }
         }
     }
 
     public void createSolutionStep(Solution solution, String stepIndex, int stepOrder) {
-        SolutionStep solutionStep = new SolutionStep(solution,stepIndex,stepOrder);
+        SolutionStep solutionStep = new SolutionStep(solution, stepIndex, stepOrder);
         solutionStepRepository.save(solutionStep);
     }
 
@@ -52,6 +52,4 @@ public class SolutionStepService {
     public int getNumberOfSteps(String solutionId) {
         return getSolutionSteps(solutionId).size();
     }
-
-
 }

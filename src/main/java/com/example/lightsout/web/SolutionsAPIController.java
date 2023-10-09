@@ -1,6 +1,5 @@
 package com.example.lightsout.web;
 
-import com.example.lightsout.common.GameProblem;
 import com.example.lightsout.database.entity.Problem;
 import com.example.lightsout.database.entity.Solution;
 import com.example.lightsout.database.service.ProblemService;
@@ -12,7 +11,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import com.example.lightsout.service.LightsOutSolverService;
 import com.example.lightsout.service.ArrayConversionService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,6 +19,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.logging.Logger;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -45,6 +45,8 @@ public class SolutionsAPIController {
 
     @Autowired
     private LightsOutSolverService lightsOutSolverService;
+
+    private static final Logger LOGGER = Logger.getLogger(SolutionsAPIController.class.getName());
 
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/lightsout/solutions", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -101,8 +103,8 @@ public class SolutionsAPIController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
     public ResponseEntity<String> getSolutionById(@NotBlank @PathVariable @Schema(description = "Problem id in UUID format",
-            example = "{ \"ff9a1fc3-7493-4531-b428-e94a97586fca\" }") String id) throws Exception {
-        System.out.println("Solutions GET controller invoked!");
+            example = "ff9a1fc3-7493-4531-b428-e94a97586fca") String id) throws Exception {
+        LOGGER.info("Solutions GET controller invoked!");
         Optional<Problem> optionalProblem = problemService.getProblemById(id);
         Optional<Solution> optionalSolution = solutionService.getByProblemId(id);
 
@@ -110,8 +112,9 @@ public class SolutionsAPIController {
             if (optionalProblem.isPresent()) {
                 Problem problem = optionalProblem.get();
                 int[][] problemArray = arrayConversionService.convertStringToArray(problem.getMatrix());
+                Long currentTime = System.currentTimeMillis();
                 int[][] solutionArray = lightsOutSolverService.solve(problemArray);
-
+                Long solutionTime = System.currentTimeMillis() - currentTime;
                 String solutionMatrix = arrayConversionService.convertArrayToString(solutionArray);
                 solutionService.createSolution(solutionMatrix, problem);
                 optionalSolution = solutionService.getByProblemId(id);
@@ -119,6 +122,10 @@ public class SolutionsAPIController {
                 solutionStepService.createSolutionSteps(solution);
                 solution.setSolutionSteps(solutionStepService.getNumberOfSteps(solution.getId()));
                 solutionService.updateSolution(solution.getId(), solution);
+
+                LOGGER.info("Time required to solve the problem with problemid " +
+                        id + " was " + solutionTime + ", the problem requires " +
+                        solutionStepService.getNumberOfSteps(solution.getId()) + " solution steps to solve it.");
 
                 if (solutionArray.length == 0) {
                     String jsonResponse = new JSONObject("{\"problemid\":" + id + "," +

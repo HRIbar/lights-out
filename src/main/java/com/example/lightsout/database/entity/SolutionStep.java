@@ -25,7 +25,7 @@ public class SolutionStep {
 
     }
 
-    public SolutionStep(Solution solution, String stepIndex, int stepOrder){
+    public SolutionStep(Solution solution, String stepIndex, int stepOrder) {
         this.id = UUID.randomUUID().toString();
         this.solution = solution;
         this.stepIndex = stepIndex;
@@ -44,6 +44,4 @@ public class SolutionStep {
     public void setSolution(Solution solution) {
         this.solution = solution;
     }
-
-    // Constructors, getters, setters, etc.
 }
