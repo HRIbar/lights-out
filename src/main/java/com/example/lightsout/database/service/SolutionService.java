@@ -7,6 +7,7 @@ import com.example.lightsout.database.repository.SolutionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,9 +27,20 @@ public class SolutionService {
         solutionRepository.save(solution);
     }
 
-    public Optional<Solution> getByProblemId(String problemKey){
-       return solutionRepository.getByProblemId(problemKey);
+    public Optional<Solution> getByProblemId(String problemKey) {
+        return solutionRepository.getByProblemId(problemKey);
     }
 
-    // Add other methods for managing solutions as needed
+    public List<Solution> getAllSolutions() {
+        return solutionRepository.findAll();
+    }
+
+    public Solution updateSolution(String solutionId, Solution updatedSolution) {
+        return solutionRepository.getById(solutionId)
+                .map(solution -> {
+                    solution.setSolutionSteps(updatedSolution.getSolutionSteps());
+                    return solutionRepository.save(solution);
+                })
+                .orElseThrow(() -> new IllegalArgumentException("Solution with id " + solutionId + " not found"));
+    }
 }

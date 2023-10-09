@@ -14,7 +14,7 @@ public class Solution {
     private String id;
 
     @Column(name = "solutionSteps")
-    private String solutionSteps;
+    private int solutionSteps;
 
     @OneToMany(mappedBy = "solution", cascade = CascadeType.ALL)
     private List<SolutionStep> solutionStepsList;
@@ -33,12 +33,12 @@ public class Solution {
     public Solution(String solutionMatrix, Problem problem) {
         this.id = UUID.randomUUID().toString();
         this.solutionStepsList = new ArrayList<>();
-        this.solutionSteps = "";
+        this.solutionSteps = 0;
         this.solutionMatrix = solutionMatrix;
         this.problem = problem;
     }
 
-    public void setSolutionSteps(String solutionSteps) {
+    public void setSolutionSteps(int solutionSteps) {
         this.solutionSteps = solutionSteps;
     }
 
@@ -46,9 +46,21 @@ public class Solution {
         this.problem = problem;
     }
 
-    public String getSolutionMatrix(){
+    public String getSolutionMatrix() {
         return this.solutionMatrix;
     }
 
-    // Constructors, getters, setters, etc.
+    public String getId() {
+        return this.id;
+    }
+
+    public Problem getProblem() {
+        return (this.problem != null) ? this.problem : null;
+    }
+
+    public int getSolutionSteps() {
+        return this.solutionSteps;
+    }
+
+
 }

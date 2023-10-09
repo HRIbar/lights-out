@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.lightsout.service.ArrayConversionService;
 
+import java.util.List;
+
 @Service
 public class SolutionStepService {
 
@@ -43,7 +45,13 @@ public class SolutionStepService {
         solutionStepRepository.save(solutionStep);
     }
 
+    public List<SolutionStep> getSolutionSteps(String solutionId) {
+        return solutionStepRepository.findBySolution_Id(solutionId);
+    }
+
+    public int getNumberOfSteps(String solutionId) {
+        return getSolutionSteps(solutionId).size();
+    }
 
 
-    // Add other methods for managing solution steps as needed
 }
